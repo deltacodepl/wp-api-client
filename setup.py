@@ -25,9 +25,9 @@ setup(
     description="Python client for the WordPress REST API",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/username/wp-api-client",
-    author="innerkore",
-    author_email="innerkore@example.com",
+    url="https://github.com/innerkorehq/wp-api-client",
+    author="Gagan (innerkore)",
+    author_email="gagan@innerkore.com",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
@@ -39,6 +39,8 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     keywords="wordpress, api, rest, wp-api",
@@ -68,8 +70,8 @@ setup(
         ],
     },
     project_urls={
-        "Bug Reports": "https://github.com/username/wp-api-client/issues",
-        "Source": "https://github.com/username/wp-api-client",
+        "Bug Reports": "https://github.com/innerkorehq/wp-api-client/issues",
+        "Source": "https://github.com/innerkorehq/wp-api-client",
         "Documentation": "https://wp-api-client.readthedocs.io/",
     },
 )

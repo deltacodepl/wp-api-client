@@ -28,7 +28,7 @@ from wp_api.auth import ApplicationPasswordAuth
 
 # Initialize client with Application Password authentication
 auth = ApplicationPasswordAuth(username="your_username", app_password="your_app_password")
-client = WPClient(base_url="https://your-wordpress-site.com", auth=auth)
+client = WPClient(base_url="https://your-wordpress-site.com", auth=auth) #auth is optional
 
 # Get all published posts
 posts = client.posts.list(status="publish")

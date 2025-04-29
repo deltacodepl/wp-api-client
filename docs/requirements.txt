@@ -1,0 +1,8 @@
+# Documentation requirements
+sphinx>=4.0.0
+sphinx_rtd_theme>=1.0.0
+sphinx-autodoc-typehints>=1.12.0
+sphinx-copybutton>=0.4.0
+myst-parser>=0.15.2
+# Project dependencies
+requests>=2.25.0

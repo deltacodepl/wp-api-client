@@ -36,7 +36,7 @@ class WPClient:
         auth=None,
         timeout: int = 30,
         user_agent: str = "Python WordPress REST API Client",
-        verify_ssl: bool = True,
+        verify_ssl: bool = False,
         retry_count: int = 0,
         retry_backoff_factor: float = 0.1
     ):

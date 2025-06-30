@@ -9,6 +9,12 @@ import sys
 import os
 import logging
 from datetime import datetime
+from dotenv import load_dotenv
+from pathlib import Path    
+
+# Load environment variables from .env file
+load_dotenv(dotenv_path=Path(".env"))
+
 
 # Add parent directory to path to import wp_api in development
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -33,9 +39,12 @@ def main():
     """Run a basic example demonstrating wp_api functionality."""
     
     # Replace these values with your WordPress site details
-    wp_url = "https://example.com"
-    username = "your_username"
-    app_password = "your_app_password"
+    wp_url = "https://tapflo.com/en-auto-translate/"
+    username = os.getenv("username")
+    app_password = os.getenv("app_password")
+    if not username or not app_password:
+        logger.error("Username or app password not set in environment variables.")
+        return
     
     logger.info(f"Connecting to WordPress site: {wp_url}")
     

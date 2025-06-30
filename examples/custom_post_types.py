@@ -8,6 +8,26 @@ Example for working with custom post types using the WordPress REST API Python C
 import sys
 import os
 import logging
+import json
+from pathlib import Path
+from dotenv import load_dotenv
+from tapflo import Product
+
+# Load environment variables from .env file
+load_dotenv(dotenv_path=Path(".env"))
+# Configure logging
+AWS_REGION = "eu-central-1"
+# Configure logging
+logging.basicConfig(
+    # filename='procognito.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("products_produkt_entity.log"),
+        logging.StreamHandler()
+    ]
+    )
+logger = logging.getLogger(__name__)
 
 # Add parent directory to path to import wp_api in development
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -16,20 +36,17 @@ from wp_api import WPClient
 from wp_api.auth import ApplicationPasswordAuth
 from wp_api.exceptions import WPAPIError
 
-# Set up logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger('wp_api_example')
 
 def main():
     """Run example demonstrating custom post type functionality."""
     
     # Replace these values with your WordPress site details
-    wp_url = "https://example.com"
-    username = "your_username"
-    app_password = "your_app_password"
+    wp_url = "https://tapflo.com/en-auto-translate/"
+    username = os.getenv("username")
+    app_password = os.getenv("app_password")
+    if not username or not app_password:
+        logger.error("Username or app password not set in environment variables.")
+        return
     
     logger.info(f"Connecting to WordPress site: {wp_url}")
     
@@ -39,7 +56,7 @@ def main():
         client = WPClient(base_url=wp_url, auth=auth)
         
         # Replace 'product' with your actual custom post type
-        custom_post_type = 'product'
+        custom_post_type = 'produkt'
         logger.info(f"Working with custom post type: {custom_post_type}")
         
         # Get custom post type handler
@@ -47,10 +64,15 @@ def main():
         
         # List items
         logger.info(f"Fetching {custom_post_type} items...")
-        items = products.list(per_page=5, status="publish")
+        items = products.list(per_page=10, status="publish", orderby="modified", order="desc")
         
+        items.sort(key=lambda x: x['modified'], reverse=True)  # Sort by date, newest first
         for item in items:
-            logger.info(f"ID: {item['id']}, Title: {item['title']['rendered']}")
+            # logger.info(f"Item: {item}")
+            # logger.info(f"ID: {item['id']}, Title: {item['title']['rendered']}")
+            product = Product(item)
+            
+            logger.info(f"Product: {product.title}, Date: {product.date}, Modified: {product.modified}, Status: {product.status}")
         
         # Get custom fields for a specific item
         if items:
@@ -61,6 +83,9 @@ def main():
             meta_fields = product_meta.get_all(product_id)
             
             logger.info(f"Meta fields: {meta_fields}")
+            content = product.content
+            if content:
+                logger.info(f"Content: {content.rendered}")
             
             # Create or update a meta field (uncomment to run)
             # logger.info(f"Updating meta field for {custom_post_type} ID: {product_id}")
